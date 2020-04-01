@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd /opt/practical-training/tools
+docker-compose run cewl "$@"
