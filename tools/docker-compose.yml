@@ -1,0 +1,64 @@
+version: '3'
+
+services:
+
+
+    beef:
+        build: ./beef
+        image: beef
+        container_name: beef
+        extra_hosts:
+            - "pwnedhub.com:172.17.0.1"
+        ports:
+            - "3000:3000"
+            - "6789:6789"
+            - "61985:61985"
+            - "61986:61986"
+        volumes:
+            - ~/.beef:/root/.beef
+
+    sqlmap:
+        build: ./sqlmap
+        image: sqlmap
+        container_name: sqlmap
+        extra_hosts:
+            - "pwnedhub.com:172.17.0.1"
+        volumes:
+            - ~/.sqlmap:/root/.sqlmap
+
+
+    cewl:
+        build: ./cewl
+        image: cewl
+        container_name: cewl
+        extra_hosts:
+            - "pwnedhub.com:172.17.0.1"
+        volumes:
+            - ~/.cewl:/tmp
+
+    nikto:
+        build: ./nikto
+        image: nikto
+        container_name: nikto
+        extra_hosts:
+            - "pwnedhub.com:172.17.0.1"
+        volumes:
+            - ~/.nikto:/tmp
+
+    nmap:
+        build: ./nmap
+        image: nmap
+        container_name: nmap
+        extra_hosts:
+            - "pwnedhub.com:172.17.0.1"
+        volumes:
+            - ~/.nmap:/tmp
+
+    sslyze:
+        build: ./sslyze
+        image: sslyze
+        container_name: sslyze
+        extra_hosts:
+            - "pwnedhub.com:172.17.0.1"
+        volumes:
+            - ~/.sslyze:/tmp

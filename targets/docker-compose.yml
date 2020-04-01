@@ -1,0 +1,47 @@
+version: '3.7'
+
+services:
+
+    app:
+        build: ./pwnedhub
+        image: pwnedhub
+        expose:
+            - 5000
+        environment:
+            - DATABASE_HOST=db
+            - CONFIG=Production
+        command: gunicorn --bind 0.0.0.0:5000 --worker-class eventlet --workers 1 pwnedhub.wsgi:app
+        depends_on:
+            - db
+
+    api:
+        image: pwnedhub
+        expose:
+            - 5001
+        environment:
+            - DATABASE_HOST=db
+            - CONFIG=Production
+        command: gunicorn --bind 0.0.0.0:5001 pwnedapi.wsgi:app
+        depends_on:
+            - db
+
+    proxy:
+        image: nginx:alpine
+        ports:
+            - 80:80
+        volumes:
+            - ./proxy/nginx.conf:/etc/nginx/nginx.conf:ro
+            - ./proxy/proxy_params:/etc/nginx/proxy_params:ro
+        depends_on:
+            - app
+            - api
+
+    db:
+        image: mysql:5.7
+        environment:
+            - MYSQL_ROOT_PASSWORD=adminpass
+            - MYSQL_DATABASE=pwnedhub
+            - MYSQL_USER=pwnedhub
+            - MYSQL_PASSWORD=dbconnectpass
+        volumes:
+            - ./pwnedhub/pwnedhub.sql:/docker-entrypoint-initdb.d/pwnedhub.sql:ro

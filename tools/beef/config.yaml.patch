@@ -1,0 +1,11 @@
+--- config.yaml
++++ config.yaml.modified
+@@ -18,7 +18,7 @@
+     # Used by both the RESTful API and the Admin interface
+     credentials:
+         user:   "beef"
+-        passwd: "beef"
++        passwd: "feeb"
+ 
+     # Interface / IP restrictions
+     restrictions:
