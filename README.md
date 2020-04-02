@@ -7,7 +7,7 @@
     ```
     cd /opt/practical-training
     sudo git pull
-    /opt/practical-training/build.sh
+    /opt/practical-training/scripts/build.sh
     ```
 
 4. Report any build issues to the instructor.
@@ -65,18 +65,15 @@
     sudo curl -L "https://github.com/docker/compose/releases/download/1.25.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
     sudo chmod +x /usr/local/bin/docker-compose
 
-    # Configure the Practical Training repository.
+    # Add the user as a sudoer
 
-    cd /opt
-    sudo git clone https://github.com/lanmaster53/practical-training
-    sudo chmod +x /opt/practical-training/*.sh
+    echo "$USER ALL=(ALL) NOPASSWD: ALL" | sudo EDITOR='tee -a' visudo
+    ```
 
+8. Reboot and test for general functionality.
+
+    ```
     sudo reboot
-    ```
-
-8. Test for general functionality.
-
-    ```
     id -nG | grep docker
     ```
 
@@ -84,33 +81,42 @@
 
 ## Pre-Deployment Build
 
-1. Update and run the Pre-build script.
+1. Configure the Practical Training repository
 
     ```
-    cd /opt/practical-training
-    sudo git pull
-    sudo ./prebuild.sh
+    cd /opt
+    sudo rm -rf practical-training
+    sudo git clone --depth 1 https://github.com/lanmaster53/practical-training
     ```
 
-2. Run the cleanup script.
+2. Run the Pre-build script.
 
     ```
-    cd /opt/practical-training
-    sudo ./cleanup.sh
+    sudo /opt/practical-training/scripts/prebuild.sh
     ```
 
-3. Snapshot the VM.
-4. Update the Practical Training repository.
+3. Run the cleanup script.
+
+    ```
+    sudo /opt/practical-training/scripts/cleanup.sh
+    ```
+
+4. Snapshot the VM.
+5. Update the Practical Training repository.
     * Set the `COMMIT` variables in the tool Dockerfiles to `HEAD`.
     * Update the uploaded Burp installers.
-5. Complete the steps in the "Students" section above.
-6. Run the test script as the `student` user.
+6. Run the build script in test mode.
 
     ```
-    cd /opt/practical-training
-    ./test.sh
+    /opt/practical-training/scripts/build.sh test
     ```
 
-7. Revert to snapshot.
-8. Update the `COMMIT` variables in the tool Dockerfiles to the tested commit hashes.
-9. Package and distribute the VM.
+7. Run the test script as the `student` user.
+
+    ```
+    /opt/practical-training/scripts/test.sh
+    ```
+
+8. Revert to snapshot.
+9. Update the `COMMIT` variables in the tool Dockerfiles to the tested commit hashes.
+10. Package and distribute the VM.
