@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ "$(id -u)" == "0" ]; then
+    echo "Please do *NOT* run as root (sudo)."
+    exit 1
+fi
+
 # Install targets
 
 cd /opt/practical-training/targets
