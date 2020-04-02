@@ -2,7 +2,6 @@ version: '3'
 
 services:
 
-
     beef:
         build: ./beef
         image: beef
@@ -23,7 +22,6 @@ services:
         network_mode: "host"
         volumes:
             - ~/.sqlmap:/root/.sqlmap
-
 
     cewl:
         build: ./cewl
